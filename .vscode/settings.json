@@ -1,6 +1,7 @@
 {
   "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
   "files.associations": {
+    "*.m": "matlab",
     ".clang-format": "yaml",
     "*.clang-format": "yaml",
     "*.cu": "cpp",
@@ -93,7 +94,9 @@
     "forward_list": "cpp",
     "executor": "cpp",
     "io_context": "cpp",
-    "netfwd": "cpp"
+    "netfwd": "cpp",
+    "utmp.h": "c",
+    "utmpx.h": "c"
   },
   "C_Cpp.clang_format_fallbackStyle": "Google",
   "C_Cpp.clang_format_style": "file",

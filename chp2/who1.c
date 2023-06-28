@@ -12,41 +12,42 @@
 
 #include <fcntl.h>
 #include <stdio.h>
+#include <time.h>
 #include <unistd.h>
 #include <utmp.h>
 
-#define SHOWHOST
+// #define SHOWHOST
 
 void show_info(struct utmp *utmpfd);
 
 int main() {
+  FILE fs;
   struct utmp current_record;
   int utmp_fd;
   int reclen = sizeof(current_record);
 
-  if ((utmp_fd = open(_PATH_UTMP, O_RDONLY) == -1)) {
-    perror(UTMP_FILE);
+  if ((utmp_fd = open(_PATH_UTMP, O_RDONLY)) == -1) {
+    perror(_PATH_UTMP);
     return 1;
   }
   read(utmp_fd, &current_record, reclen);
-  // while (read(utmp_fd, &current_record, reclen) == reclen) {
-  //   printf("hello");
-  //   show_info(&current_record);
-  // }
-  printf("hello");
+  while (read(utmp_fd, &current_record, reclen) == reclen) {
+    show_info(&current_record);
+  }
   close(utmp_fd);
   return 0;
 }
 
 void show_info(struct utmp *record) {
-  // printf("% -8.8s", utmpfd->ut_id);
-  // printf(" ");
-  // printf("% -8.8s", utmpfd->ut_line);
-  // printf(" ");
-  printf("hello");
-  printf("(%s)", record->ut_id);
-  // printf("% 10ld", utmpfd->ut_tv);
+  printf("% -8.8s", record->ut_user);
   printf(" ");
+  printf("% -8.8s", record->ut_line);
+  printf(" ");
+  // get time of login
+  time_t timestamp = record->ut_tv.tv_sec;
+  struct tm *info;
+  info = localtime(&timestamp);
+  printf("%d-%d-%d", info->tm_year + 1900, info->tm_mon + 1, info->tm_mday);
 #ifdef SHOWHOST
   printf("(%s)", record->ut_host);
 #endif
